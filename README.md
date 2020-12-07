@@ -1,4 +1,4 @@
-# PermaTab
+# ClassAccount
 Chrome extension that always opens google classroom and drive links with a particuar account (default is second account)
 
 **How to install Install**
