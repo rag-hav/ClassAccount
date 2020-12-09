@@ -35,13 +35,12 @@ rules = [{
 
 function updateTab(tab) {
 
-        chrome.tabs.get(tab.openerTabId || 1, (openerTab) => {
+        chrome.tabs.get(tab.openerTabId || tab.id, (openerTab) => {
                 //console.log(openerTab.url);
                 for (rule of rules) {
                         if (rule.openerId) {
                                 if (tab.openerTabId) {
                                         let res = rule.openerReg.exec(openerTab.url);
-                                        console.log(res);
                                         if (!res || res[0] != rule.openerId) {
                                                 continue;
                                         }

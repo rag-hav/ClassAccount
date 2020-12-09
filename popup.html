@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <link rel="stylesheet" href="stylesheet2.css">
+                <script src="popup.js"></script>
+        </head>
+        <body>
+                <div>
+                        <span class="sec_head">Drive</span>
+                        <label class="switch" >
+                                <div class="toggle_placeholder" id="placeholder_drive_on">
+                                        <!---
+                                                //saare toggle placeholder ke andar js se input element daalega, iss tarah
+                                                <input type="checkbox" id="drive_on">
+                                        -->
+                                </div>
+                                <span class="slider round"></span>
+                        </label><br>
+                        <label for="drive_inp" class="label-in"> Default Account
+                                <input class="in_box" type="number" id="drive_inp" name="drive_inp" onchange="saveChange(this.id)" min="1">
+                        </label>
+                        <br>
+                        <label class="label-in">
+                                <div class="toggle_placeholder" id="placeholder_drive_restricted">
+                                </div>
+                                <span>Open only from associated gmail</span>
+                        </label>
+                </div>
+                <br>
+                <div>
+                        <span class="sec_head">Classroom</span>
+                        <label class="switch" >
+                                <div class="toggle_placeholder" id="placeholder_classroom_on">
+                                </div>
+                                <span class="slider round"></span>
+                        </label><br>
+                        <label for="classroom_inp" class="label-in"> Default Account
+                                <input class="in_box" type="number" id="classroom_inp" name="classroom_inp" onchange="saveChange(this.id)" min="1">
+                        </label>
+                        <br>
+                        <label class="label-in">
+                                <div class="toggle_placeholder" id="placeholder_classroom_restricted">
+                                </div>
+                                <span>Open only from associated gmail</span>
+                        </label>
+                </div>
+        </body>
+</html>

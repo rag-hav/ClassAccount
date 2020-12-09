@@ -1,12 +1,21 @@
 {
-	"manifest_version": 2,
-	"name": "Class Account",
-	"icons": {
-		"300": "assets/icon.png"
-	},
-	"version": "0.1",
-	"permissions": ["tabs"],
-	"background": {
-		"scripts": ["background.js"]
-	}
+        "manifest_version": 2,
+        "name": "Class Account",
+        "icons": {
+                "16": "assets/icon16.png",
+                "48": "assets/icon48.png",
+                "128": "assets/icon128.png"
+        },
+        "version": "0.1",
+        "permissions": ["tabs", "storage"],
+        "background": {
+                "scripts": ["background.js"]
+        },
+        "browser_action": {
+                "default_icon": {
+                        "19": "assets/icon19.png",
+                        "38": "assets/icon38.png"
+                },
+                "default_popup": "popup.html"
+        }
 }
