@@ -1,69 +1,62 @@
-// change these values to change your default account
-default_accounts = {
-        "classroom": 2,
-        "drive": 2,
-}
+import {
+        def_configs,
+        openerRegexs
+} from "/config.js";
+var configs = def_configs;
 
-for (key in default_accounts) {
-        default_accounts[key] -= 1;
-}
-
-
-rules = [{
-                reg: /(?<=https?:\/\/classroom\.google\.com\/u\/)\d(?=.*)/,
-                openerReg: null,
-                openerId: null,
-                default_: default_accounts["classroom"],
-        },
-
-        {
-                reg: /(?<=https?:\/\/drive\.google\.com\/drive\/u\/)\d(?=.*)/,
-                openerReg: /(?<=https?:\/\/mail\.google\.com\/mail\/u\/)\d(?=.*)/,
-                openerId: default_accounts["drive"],
-                default_: default_accounts["drive"],
-        },
-
-        {
-                reg: /(?<=https?:\/\/drive\.google\.com\/)drive(?=.*)/,
-                openerReg: /(?<=https?:\/\/mail\.google\.com\/mail\/u\/)\d(?=.*)/,
-                openerId: default_accounts["drive"],
-                default_: "drive/u/" + default_accounts["drive"],
-        },
-
-];
-
-
-function updateTab(tab) {
-
+function checkAndRedirect(tab) {
         chrome.tabs.get(tab.openerTabId || tab.id, (openerTab) => {
-                //console.log(openerTab.url);
-                for (rule of rules) {
-                        if (rule.openerId) {
-                                if (tab.openerTabId) {
-                                        let res = rule.openerReg.exec(openerTab.url);
-                                        if (!res || res[0] != rule.openerId) {
-                                                continue;
-                                        }
-                                } else continue;
-                        }
+                for (let serviceKey in configs) {
+                        let service = configs[serviceKey];
+                        if (service.active.val) {
+                                if (service.restrict_to_gmail.val) {
+                                        /***************************************/
+                                        continue;
+                                        /***************************************/
+                                        if (tab.openerTabId) {
+                                                let flag = 0;
+                                                for (let openerRegex of openerRegexs.gmail) {
+                                                        let res = openerRegex.exec(openerTab.url);
+                                                        if (!res || res[0] != service.default_account.val) {
+                                                                flag = 1;
+                                                                break;
+                                                        }
+                                                }
+                                                if (flag) continue;
+                                        } else continue;
+                                }
 
-                        let res = rule.reg.exec(tab.url);
-                        if (res) {
-                                if (res[0] != rule.default_) {
-                                        chrome.tabs.update(tab.id, {
-                                                "url": tab.url.replace(rule.reg, rule.default_)
-                                        }, () => {});
-                                        break;
-                                } else break;
+                                console.log(serviceKey);
+                                for (let urlRegexObj of service.url_regexs) {
+                                        console.log(urlRegexObj);
+                                        let res = urlRegexObj.regex.exec(tab.url);
+                                        if (res) {
+                                                if (res[0] != service.default_account.val) {
+                                                        chrome.tabs.update(tab.id, {
+                                                                "url": tab.url.replace(urlRegexObj.urlRegex, urlRegexObj.replace_prefix +
+                                                                        service.default_account.val)
+                                                        }, () => {});
+                                                        break;
+                                                } else break;
+                                        }
+                                }
                         }
                 }
         });
-
 }
 
-chrome.tabs.onUpdated.addListener((tabid, chInfo, tab) => {
-        updateTab(tab);
+chrome.runtime.onMessage.addListener((msg) => {
+        if (msg.reload) {
+                chrome.storage.sync.get(configs, (res) => {
+                        configs = res;
+                });
+        }
 });
+
+chrome.tabs.onUpdated.addListener((tabid, chInfo, tab) => {
+        checkAndRedirect(tab);
+});
+
 chrome.tabs.onCreated.addListener((tab) => {
-        updateTab(tab);
+        checkAndRedirect(tab);
 });

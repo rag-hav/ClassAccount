@@ -1,63 +1,51 @@
+import {
+        def_configs,
+} from "/config.js";
+
 document.addEventListener('DOMContentLoaded', intializeHtml, false);
-var things_to_store = [{
-        id_: 'drive_inp',
-        default_val: 2,
-        attribute_to_set: "value",
-}, {
-        id_: "drive_restricted",
-        default_val: true,
-        attribute_to_set: "checked",
-}, {
-        id_: "drive_on",
-        default_val: true,
-        attribute_to_set: "checked",
-}, {
-        id_: 'classroom_inp',
-        default_val: 2,
-        attribute_to_set: "value",
-}, {
-        id_: "classroom_restricted",
-        default_val: false,
-        attribute_to_set: "checked",
-}, {
-        id_: "classroom_on",
-        default_val: false,
-        attribute_to_set: "checked",
-}, ];
+var configs = def_configs;
 
 function intializeHtml() {
-        let def_values = {};
-        for (thing of things_to_store) {
-                def_values[thing.id_] = thing.default_val;
-        }
-        chrome.storage.sync.get(def_values, (res) => {
-                for (thing of things_to_store) {
-                        if (document.getElementById(thing.id_))
-                                document.getElementById(thing.id_).setAttribute(thing.attribute_to_set, res[thing.id_]);
-                        else {
-                                if (document.getElementById("placeholder_" + thing.id_)) {
-                                        var ele = document.createElement("input");
-                                        ele.setAttribute(thing.attribute_to_set, res[thing.id_]);
-                                        ele.setAttribute("id", thing.id_);
-                                        ele.setAttribute("type", "checkbox");
-                                        ele.addEventListener("change", saveChange);
-                                        document.getElementById("placeholder_" + thing.id_).appendChild(ele);
-
+        chrome.storage.sync.get(configs, (res) => {
+                configs = res;
+                for (let divId of Object.keys(configs)) {
+                        for (let divProperty in configs[divId]) {
+                                var elemId = divId + '_' + divProperty;
+                                console.log(elemId);
+                                var elem = configs[divId][divProperty];
+                                if (document.getElementById(elemId)) {
+                                        document.getElementById(elemId).setAttribute(elem.attribute_to_set, elem.val);
+                                } else {
+                                        if (document.getElementById("placeholder_" + elemId)) {
+                                                var newElem = document.createElement("input");
+                                                if (elem.attribute_to_set == "checked") {
+                                                        if (elem.val) newElem.setAttribute(elem.attribute_to_set, "");
+                                                } else newElem.setAttribute(elem.attribute_to_set, elem.val);
+                                                newElem.setAttribute("id", elemId);
+                                                newElem.setAttribute("class", divProperty);
+                                                newElem.setAttribute("type", "checkbox");
+                                                document.getElementById("placeholder_" + elemId).appendChild(newElem);
+                                        }
                                 }
-
                         }
                 }
-
+                for (let elem of document.getElementsByTagName('input')) {
+                        elem.addEventListener("change", saveChange);
+                }
         });
 }
 
-function saveChange(id) {
-        for (thing of things_to_store) {
-                if (thing.id_ == id) {
-                        chrome.storage.sync.set({
-                                id: document.getElementById(id)[thing.attribute_to_set]
-                        }, () => {});
-                        break;
-                }
+function saveChange(ev) {
+        console.log(ev);
+        var elem = ev.target;
+        console.log(elem);
+        var divId = elem.closest(".service").id;
+        var newObj = {
+                ...configs[divId]
+        };
+        newObj[elem.className] = {
+                attribute_to_set: configs[divId][elem.className]["attribute_to_set"],
+                val: elem.getAttribute(configs[divId][elem.className]["attribute_to_set"]),
         }
+        chrome.storage.sync.set(newObj, () => {});
 }

@@ -1,45 +1,41 @@
 <!DOCTYPE html>
 <html>
         <head>
-                <link rel="stylesheet" href="stylesheet2.css">
-                <script src="popup.js"></script>
+                <link rel="stylesheet" href="stylesheet.css">
+                <script type="module" src="popup.js"></script>
         </head>
         <body>
-                <div>
+                <div class="service" id="drive">
                         <span class="sec_head">Drive</span>
                         <label class="switch" >
-                                <div class="toggle_placeholder" id="placeholder_drive_on">
-                                        <!---
-                                                //saare toggle placeholder ke andar js se input element daalega, iss tarah
-                                                <input type="checkbox" id="drive_on">
-                                        -->
+                                <div class="toggle_placeholder" id="placeholder_drive_active">
                                 </div>
                                 <span class="slider round"></span>
                         </label><br>
-                        <label for="drive_inp" class="label-in"> Default Account
-                                <input class="in_box" type="number" id="drive_inp" name="drive_inp" onchange="saveChange(this.id)" min="1">
+                        <label for="drive_default_account" class="label-in"> Default Account
+                                <input class="default_account" type="number" id="drive_default_account" min="1">
                         </label>
                         <br>
                         <label class="label-in">
-                                <div class="toggle_placeholder" id="placeholder_drive_restricted">
+                                <div class="toggle_placeholder" id="placeholder_drive_restrict_to_gmail">
                                 </div>
                                 <span>Open only from associated gmail</span>
                         </label>
                 </div>
                 <br>
-                <div>
+                <div class="service" id="classroom">
                         <span class="sec_head">Classroom</span>
                         <label class="switch" >
-                                <div class="toggle_placeholder" id="placeholder_classroom_on">
+                                <div class="toggle_placeholder" id="placeholder_classroom_active">
                                 </div>
                                 <span class="slider round"></span>
                         </label><br>
-                        <label for="classroom_inp" class="label-in"> Default Account
-                                <input class="in_box" type="number" id="classroom_inp" name="classroom_inp" onchange="saveChange(this.id)" min="1">
+                        <label for="classroom_default_account" class="label-in"> Default Account
+                                <input class="default_account" type="number" id="classroom_default_account" min="1">
                         </label>
                         <br>
                         <label class="label-in">
-                                <div class="toggle_placeholder" id="placeholder_classroom_restricted">
+                                <div class="toggle_placeholder" id="placeholder_classroom_restrict_to_gmail">
                                 </div>
                                 <span>Open only from associated gmail</span>
                         </label>
