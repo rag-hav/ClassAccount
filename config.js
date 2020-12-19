@@ -6,7 +6,7 @@ var def_configs = {
                 },
                 default_account: {
                         attribute_to_set: "value",
-                        val: 1,
+                        val: 2,
                 },
                 restrict_to_gmail: {
                         attribute_to_set: "checked",
@@ -27,7 +27,7 @@ var def_configs = {
                 },
                 default_account: {
                         attribute_to_set: "value",
-                        val: 1,
+                        val: 2,
                 },
                 restrict_to_gmail: {
                         attribute_to_set: "checked",

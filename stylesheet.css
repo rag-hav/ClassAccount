@@ -12,14 +12,16 @@ body {
         width:30px;
 }
 
-.label-in{
+.label_default_account {
         display: inline-block;
         margin-left: 30px;
 }
 
-.widthbig{
-        width:100%;
+.label_restrict {
+        display: inline-block;
+        margin-left: 30px;
 }
+
 .sec_head{
         font-size: 125%;
 }

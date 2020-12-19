@@ -9,15 +9,15 @@ function checkAndRedirect(tab) {
                 for (let serviceKey in configs) {
                         let service = configs[serviceKey];
                         if (service.active.val) {
+
+                                //if the service is restricted then we check the opener tab
+                                //and skip the service if it doesnt match
                                 if (service.restrict_to_gmail.val) {
-                                        /***************************************/
-                                        continue;
-                                        /***************************************/
                                         if (tab.openerTabId) {
                                                 let flag = 0;
                                                 for (let openerRegex of openerRegexs.gmail) {
                                                         let res = openerRegex.exec(openerTab.url);
-                                                        if (!res || res[0] != service.default_account.val) {
+                                                        if (!res || res[0] != service.default_account.val - 1) {
                                                                 flag = 1;
                                                                 break;
                                                         }
@@ -26,15 +26,14 @@ function checkAndRedirect(tab) {
                                         } else continue;
                                 }
 
-                                console.log(serviceKey);
                                 for (let urlRegexObj of service.url_regexs) {
-                                        console.log(urlRegexObj);
                                         let res = urlRegexObj.regex.exec(tab.url);
                                         if (res) {
-                                                if (res[0] != service.default_account.val) {
+                                                if (res[0] != service.default_account.val - 1) {
                                                         chrome.tabs.update(tab.id, {
-                                                                "url": tab.url.replace(urlRegexObj.urlRegex, urlRegexObj.replace_prefix +
-                                                                        service.default_account.val)
+                                                                "url": tab.url.replace(urlRegexObj.regex, urlRegexObj
+                                                                        .replace_prefix + String(service
+                                                                                .default_account.val - 1))
                                                         }, () => {});
                                                         break;
                                                 } else break;

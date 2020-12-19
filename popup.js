@@ -11,7 +11,6 @@ function intializeHtml() {
                 for (let divId of Object.keys(configs)) {
                         for (let divProperty in configs[divId]) {
                                 var elemId = divId + '_' + divProperty;
-                                console.log(elemId);
                                 var elem = configs[divId][divProperty];
                                 if (document.getElementById(elemId)) {
                                         document.getElementById(elemId).setAttribute(elem.attribute_to_set, elem.val);
@@ -36,16 +35,19 @@ function intializeHtml() {
 }
 
 function saveChange(ev) {
-        console.log(ev);
         var elem = ev.target;
-        console.log(elem);
         var divId = elem.closest(".service").id;
-        var newObj = {
+        var newObj = {};
+        newObj[divId] = {
                 ...configs[divId]
         };
-        newObj[elem.className] = {
+        newObj[divId][elem.className] = {
                 attribute_to_set: configs[divId][elem.className]["attribute_to_set"],
-                val: elem.getAttribute(configs[divId][elem.className]["attribute_to_set"]),
+                val: this[configs[divId][elem.className]["attribute_to_set"]],
         }
-        chrome.storage.sync.set(newObj, () => {});
+        chrome.storage.sync.set(newObj, () => {
+                chrome.runtime.sendMessage({
+                        reload: true
+                }, () => {});
+        });
 }
