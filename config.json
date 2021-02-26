@@ -1,0 +1,50 @@
+{
+        "drive": {
+                "active": {
+                        elem_id: "drive_on",
+                        attribute_to_set: "checked",
+                        "val": true
+                },
+                "default_account": {
+                        elem_id: "drive_inp",
+                        attribute_to_set: "value",
+                        "val": 2
+                },
+                "restrict_to_gmail": {
+                        elem_id: "drive_restricted",
+                        attribute_to_set: "checked",
+                        "val": true
+                },
+                "urlRegexs": [{
+                        "regex": "(?<=https?:\\/\\/drive\\.google\\.com\\/drive\\/u\\/)\\d(?=.*)",
+                        "replace_prefix": ""
+                }, {
+                        "regex": "(?<=https?:\\/\\/drive\\.google\\.com\\/)drive(?=.*)",
+                        "replace_prefix": "/u/"
+                }]
+        },
+        "classroom": {
+                "active": {
+                        elem_id: "classroom_on",
+                        attribute_to_set: "checked",
+                        "val": true
+                },
+                "default_account": {
+                        elem_id: "classroom_inp",
+                        attribute_to_set: "value",
+                        "val": 2
+                },
+                "restrict_to_gmail": {
+                        elem_id: "classroom_restricted",
+                        attribute_to_set: "checked",
+                        "val": true
+                },
+                "url_regexs": [{
+                        "regex": "(?<=https?:\\/\\/classroom\\.google\\.com\\/u\\/)\\d(?=.*)",
+                        "replace_prefix": ""
+                }]
+        },
+        "opener_regexs": {
+                "gmail": ["(?<=https?:\\/\\/mail\\.google\\.com\\/mail\\/u\\/)\\d(?=.*)"]
+        }
+}
